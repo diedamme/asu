@@ -1,0 +1,19 @@
+{
+  "person": [
+    {
+      "id": 1,
+      "firstName": "Roman",
+      "lastName": "Nikolaen"
+    },
+    {
+      "firstName": "павел",
+      "lastName": "дуров",
+      "id": 2
+    },
+    {
+      "firstName": "марк",
+      "lastName": "цукерберг",
+      "id": 3
+    }
+  ]
+}
