@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 import Change from '../components/Change'
+import ReactNotification from 'react-notifications-component'
+import { store } from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+import 'animate.css/animate.compat.css'
 
 const Table = (props) => {
   const [showChange, setShowChange] = useState(false);
@@ -10,7 +14,59 @@ const Table = (props) => {
 
   const deletePerson = async (id) => {
     await axios.delete(`http://localhost:4000/person/${id}`)
+    .catch( error => {
+      if(error.response.status === 400){
+        store.addNotification({
+          title:'Ошибка!',
+          message:'Неверный запрос',
+          type: 'danger',
+          container: 'bottom-center',
+          insert: 'bottom',
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            showIcon: true
+          }
+        })
+      }
+      else if(error.response.status === 404){
+        store.addNotification({
+          title:'Ошибка!',
+          message:'Сотрудник не найден в системе',
+          type: 'danger',
+          container: 'bottom-center',
+          insert: 'bottom',
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            showIcon: true
+          }
+        })
+      }
+      else if(error.response.status === 500){
+        store.addNotification({
+          title:'Ошибка!',
+          message:'Ошибка на стороне сервета. Повторите позднее.',
+          type: 'danger',
+          container: 'bottom-center',
+          insert: 'bottom',
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            showIcon: true
+          }
+        })
+      }
+      
+    });
     props.getPerson()
+  }
+
+  const closeChange = () => {
+    setShowChange(false)
   }
 
   const itemChange = (id, firstName, lastName) => {
@@ -22,6 +78,7 @@ const Table = (props) => {
 
   return (
     <>
+    <ReactNotification/>
       <table>
         <tr>
           <th></th>
@@ -44,7 +101,7 @@ const Table = (props) => {
           )
         })}
       </table>
-      {showChange ? <Change id={activeId} firstName={activeFirstName} lastName={activeLastName} getPerson={props.getPerson}/> : null}
+      {showChange ? <Change id={activeId} firstName={activeFirstName} lastName={activeLastName} getPerson={props.getPerson} closeChange={closeChange}/> : null}
     </>
   )
 }
