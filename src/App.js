@@ -11,12 +11,12 @@ function App() {
   const [showAdd, setShowAdd] = useState(false);
   const [person, setPerson] = useState([]);
 
-  const notification = (message = 'Неверный запрос.', type = 'danger') => {
+  const notification = (message, type = 'danger') => {
     return store.addNotification({
       title: 'Ошибка!',
       message: message,
       type: type,
-      container: 'top-right',
+      container: 'bottom-left',
       insert: 'bottom',
       animationIn: ['animated', 'fadeIn'],
       animationOut: ['animated', 'fadeOut'],
@@ -35,7 +35,7 @@ function App() {
           } else if (error.response.status === 404) {
             notification('Сотрудник не найден в системе.');
           } else if (error.response.status === 500) {
-            notification('Ошибка на стороне сервета. Повторите позднее.');
+            notification('Ошибка на стороне сервера.');
           }
         });
   };
@@ -48,7 +48,6 @@ function App() {
 
   return (
     <div className='container'>
-      <ReactNotification/>
       <Table
         person={person}
         getPerson={getPerson}
@@ -65,6 +64,7 @@ function App() {
         notification={notification}
       /> :
       null}
+      <ReactNotification/>
     </div>
   );
 }

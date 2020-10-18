@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import Change from '../components/Change';
 import ReactNotification from 'react-notifications-component';
-import 'react-notifications-component/dist/theme.css';
-import 'animate.css/animate.compat.css';
 
 const Table = (props) => {
   const [showChange, setShowChange] = useState(false);
@@ -18,11 +16,11 @@ const Table = (props) => {
         })
         .catch( error => {
           if (error.response.status === 400) {
-            props.notification();
+            props.notification('Неверный запрос.');
           } else if (error.response.status === 404) {
             props.notification('Сотрудник не найден в системе.');
           } else if (error.response.status === 500) {
-            props.notification('Ошибка на стороне сервета. Повторите позднее.');
+            props.notification('Ошибка на стороне сервера.');
           }
         });
   };
@@ -69,8 +67,11 @@ const Table = (props) => {
                   </span>
                   <span
                     onClick={() => deletePerson(item.id)}
-                    className='material-icons'>
+                    className='material-icons tooltip'>
                     clear
+                    <span className='tooltiptext'>
+                      Удалить сотрудника
+                    </span>
                   </span>
                 </td>
               </tr>
