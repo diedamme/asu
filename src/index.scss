@@ -15,6 +15,10 @@ code {
   max-width: 1200px;
   margin: 0 auto;
 }
+.table {
+  display: block;
+  overflow-x: auto;
+}
 
 table {
   border-collapse: collapse;
@@ -32,7 +36,7 @@ th {
 td {
   border-bottom: 1px solid black;
   &:first-child {
-    width: 24px;
+    width: 30px;
   }
   &:last-child {
     width: 48px;
@@ -44,7 +48,7 @@ td {
 }
 
 th, td {
-  padding: 10px 0;
+  padding: 10px 5px;
 }
 
 button {
@@ -65,7 +69,7 @@ button {
   }
 }
 
-.popUp {
+.form {
   position: absolute;
   top: 0;
   left: 0;
@@ -79,7 +83,7 @@ button {
   background: rgba(0, 0, 0, 0.267);
 }
 
-.popUp__all {
+form {
   position: absolute;
   top: 25%;
   left: 30%;
@@ -90,7 +94,7 @@ button {
   width: 40%;
   border-radius: 5px;
 
-  .popUp-title {
+  .form-title {
     color: #fff;
     font-size: 18px;
     font-weight: 600;
@@ -98,9 +102,10 @@ button {
     align-self: flex-start;
     width: calc(100% - 10px);
     padding: 10px 0 10px 10px;
+    border-radius: 5px 5px 0 0;
   }
 
-  .popUp-body {
+  .form-body {
     display: flex;
     flex-direction: column;
     width: 90%;
@@ -133,5 +138,25 @@ button {
       align-self: flex-end;
       margin-bottom: 5px;
     }
+  }
+}
+
+@media (max-width:1200px) {
+  .container {
+    max-width: 970px;
+  }
+}
+@media (max-width:970px) {
+  .container {
+    max-width: 750px;
+  }
+}
+@media (max-width:767px) {
+  .container {
+    max-width: none;
+  }
+  form {
+    left: 0;
+    width: 100%;
   }
 }
