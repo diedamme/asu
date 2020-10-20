@@ -10,19 +10,24 @@ const Table = (props) => {
   const [activeLastName, setActiveLastName] = useState('');
 
   const deletePerson = async (id) => {
-    await axios.delete(`http://localhost:4000/person/${id}`)
-        .then( () => {
-          props.getPerson();
-        })
-        .catch( error => {
-          if (error.response.status === 400) {
-            props.notification('Неверный запрос.');
-          } else if (error.response.status === 404) {
-            props.notification('Сотрудник не найден в системе.');
-          } else if (error.response.status === 500) {
-            props.notification('Ошибка на стороне сервера.');
-          }
-        });
+    try {
+      await axios.delete(`http://localhost:4000/person/${id}`);
+      props.getPerson();
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 400) {
+          props.notification('Неверный запрос.');
+        } else if (error.response.status === 404) {
+          props.notification('Сотрудник не найден в системе.');
+        } else if (error.response.status === 500) {
+          props.notification('Ошибка на стороне сервера.');
+        }
+      } else if (error.request) {
+        props.notification('Ошибка сети.');
+      } else {
+        props.notification('Внутренняя ошибка приложения.');
+      }
+    }
   };
 
   const closeChange = () => {

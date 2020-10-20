@@ -10,20 +10,25 @@ const Add = (props) => {
   const createPerson = async (event) => {
     event.preventDefault();
     if (firstName.trim() && lastName.trim()) {
-      await axios.post('http://localhost:4000/person/', {firstName: firstName.trim(), lastName: lastName.trim()})
-          .then( () => {
-            props.closeAdd();
-            props.getPerson();
-          })
-          .catch( error => {
-            if (error.response.status === 400) {
-              props.notification('Неверный запрос.');
-            } else if (error.response.status === 404) {
-              props.notification('Сотрудник не найден в системе.');
-            } else if (error.response.status === 500) {
-              props.notification('Ошибка на стороне сервера.');
-            }
-          });
+      try {
+        await axios.post('http://localhost:4000/person/', {firstName: firstName.trim(), lastName: lastName.trim()});
+        props.closeAdd();
+        props.getPerson();
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 400) {
+            props.notification('Неверный запрос.');
+          } else if (error.response.status === 404) {
+            props.notification('Сотрудник не найден в системе.');
+          } else if (error.response.status === 500) {
+            props.notification('Ошибка на стороне сервера.');
+          }
+        } else if (error.request) {
+          props.notification('Ошибка сети.');
+        } else {
+          props.notification('Внутренняя ошибка приложения.');
+        }
+      }
     } else {
       props.notification('Заполните пустые поля!', 'warning');
     }

@@ -28,16 +28,24 @@ function App() {
   };
 
   const getPerson = async () => {
-    await axios.get('http://localhost:4000/person').then( response => setPerson(response.data))
-        .catch( error => {
-          if (error.response.status === 400) {
-            notification();
-          } else if (error.response.status === 404) {
-            notification('Сотрудник не найден в системе.');
-          } else if (error.response.status === 500) {
-            notification('Ошибка на стороне сервера.');
-          }
-        });
+    try {
+      const response = await axios.get('http://localhost:4000/person');
+      setPerson(response.data);
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 400) {
+          notification('Неверный запрос.');
+        } else if (error.response.status === 404) {
+          notification('Сотрудник не найден в системе.');
+        } else if (error.response.status === 500) {
+          notification('Ошибка на стороне сервера.');
+        }
+      } else if (error.request) {
+        notification('Ошибка сети.');
+      } else {
+        notification('Внутренняя ошибка приложения.');
+      }
+    }
   };
   useEffect(() => {
     getPerson();

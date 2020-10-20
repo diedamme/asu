@@ -36,6 +36,7 @@ th {
 }
 td {
   border-bottom: 1px solid black;
+  word-break: break-all;
   &:first-child {
     width: 30px;
   }
